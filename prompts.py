@@ -28,5 +28,5 @@ for question_id in questions_ids:
     except Exception as e:
         print(e)
 
-with open(f'assets/prompts_ctx_depth_{context_depth}.json', 'w', encoding = 'utf-8') as json_file:
+with open(f'assets/prompts_ctx_depth_{context_depth}.json', 'w', encoding = 'utf8') as json_file:
     json.dump(prompts, json_file, ensure_ascii=False, indent = 4)

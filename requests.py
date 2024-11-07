@@ -1,20 +1,15 @@
 import os
 import json
+import logging
 from openai import OpenAI
 
-with open('assets/prompts_ctx_depth_3.json', 'r', encoding = 'utf8') as file:
-    prompts = json.load(file)
-
-print(prompts[0])
-api_key = os.environ['OPENAI_API_KEY']
-client = OpenAI()
-
-response = client.chat.completions.create(
+def send_prompt(client, prompt):
+  return client.chat.completions.create(
   model = 'gpt-4o-mini',
   messages = [
         {
             "role": "user",
-            "content": prompts[0],
+            "content": prompt,
         }
     ],
   temperature = 0.7,
@@ -57,9 +52,44 @@ response = client.chat.completions.create(
       'strict': True
     }
   }
-)
+  )
 
-print(response)
+logger = logging.getLogger(__name__)
+   
+def main():
+  logging.basicConfig(filename='requests.log', level=logging.INFO, encoding='utf8')
+  logger.info('started')
+
+  with open('assets/prompts_ctx_depth_3.json', 'r', encoding = 'utf8') as file:
+      prompts = json.load(file)
+
+  client = OpenAI()
+
+  responses = []
+
+  for prompt in prompts:
+    logger.info(f'Prompt:\n{prompt}')
+    try:
+      response = send_prompt(client, prompt)
+      content = response.choices[0].message.content
+
+      responses.append({
+        'prompt': prompt,
+        'response': content
+      })
+
+      logger.info(f'Response:\n{content}')
+    except Exception as e:
+      logger.error(e)
+  
+  with open('prompts_and_responses_ctx_depth_3.json', 'w', encoding='utf8') as json_file:
+    json.dump(responses, json_file, indent=4, ensure_ascii=False)
+
+
+  logger.info('completed')
+
+if __name__ == '__main__':
+  main()
 
 '''
 Jesteś anotatorem zbioru językowego. Dokonaj analizy zdania pod kątem spełniania następujących warunków. Zdania przed i po służą jako kontekst.
