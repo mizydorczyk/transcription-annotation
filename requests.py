@@ -1,4 +1,3 @@
-import os
 import json
 import logging
 from openai import OpenAI
@@ -68,13 +67,14 @@ def main():
   responses = []
 
   for prompt in prompts:
-    logger.info(f'Prompt:\n{prompt}')
+    logger.info(f'Prompt:\n{prompt['prompt']}')
     try:
-      response = send_prompt(client, prompt)
+      response = send_prompt(client, prompt['prompt'])
       content = response.choices[0].message.content
 
       responses.append({
-        'prompt': prompt,
+        'question_id': prompt['question_id'],
+        'prompt': prompt['prompt'],
         'response': content
       })
 
@@ -82,7 +82,7 @@ def main():
     except Exception as e:
       logger.error(e)
   
-  with open('prompts_and_responses_ctx_depth_3.json', 'w', encoding='utf8') as json_file:
+  with open('runs/prompts_and_responses_ctx_depth_3.json', 'w', encoding='utf8') as json_file:
     json.dump(responses, json_file, indent=4, ensure_ascii=False)
 
 
