@@ -2,8 +2,8 @@ import pandas as pd
 import json
 
 def main():
-    transcript = pd.read_csv('assets/transcript.csv', index_col = 1)
-    questions_ids = transcript.index[transcript.is_question == 1]
+    transcription = pd.read_csv('assets/transcription.csv', index_col = 1)
+    questions_ids = transcription.index[transcription.is_question == 1]
     context_depth = 3
 
     base_prompt = '''Jesteś anotatorem zbioru językowego. Dokonaj analizy zdania pod kątem spełniania następujących warunków. Zdania przed i po służą jako kontekst.
@@ -22,8 +22,8 @@ def main():
             data = 'id zdania | id mówiącego | zdanie\n'
             for counter in range(2 * context_depth + 1):
                 index = question_id - context_depth + counter
-                if index in transcript.index:
-                    data += f'{index} | {transcript.speaker_id[index]} | {transcript.sentence[index]}\n'
+                if index in transcription.index:
+                    data += f'{index} | {transcription.speaker_id[index]} | {transcription.sentence[index]}\n'
 
             prompts.append({
                 "question_id": question_id,
@@ -32,7 +32,7 @@ def main():
         except Exception as e:
             print(e)
 
-    with open(f'assets/prompts_ctx_depth_{context_depth}.json', 'w', encoding = 'utf8') as json_file:
+    with open(f'canonical-vs-noncanonical/runs/run1/prompts_ctx_depth_{context_depth}.json', 'w', encoding = 'utf8') as json_file:
         json.dump(prompts, json_file, ensure_ascii=False, indent = 4)
 
 if __name__ == '__main__':

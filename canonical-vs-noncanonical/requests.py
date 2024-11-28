@@ -56,10 +56,10 @@ def send_prompt(client, prompt):
 logger = logging.getLogger(__name__)
    
 def main():
-  logging.basicConfig(filename='requests.log', level=logging.INFO, encoding='utf8')
+  logging.basicConfig(filename='canonical-vs-noncanonical/runs/run1/requests.log', level=logging.INFO, encoding='utf8')
   logger.info('started')
 
-  with open('assets/prompts_ctx_depth_3.json', 'r', encoding = 'utf8') as file:
+  with open('canonical-vs-noncanonical/runs/run1/prompts_ctx_depth_3.json', 'r', encoding = 'utf8') as file:
       prompts = json.load(file)
 
   client = OpenAI()
@@ -82,7 +82,7 @@ def main():
     except Exception as e:
       logger.error(e)
   
-  with open('runs/prompts_and_responses_ctx_depth_3.json', 'w', encoding='utf8') as json_file:
+  with open('runs/run1/prompts_and_responses_ctx_depth_3.json', 'w', encoding='utf8') as json_file:
     json.dump(responses, json_file, indent=4, ensure_ascii=False)
 
 

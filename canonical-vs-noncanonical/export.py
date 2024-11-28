@@ -2,7 +2,7 @@ import json
 import pandas as pd
 
 def main():
-    with open('runs/run1/prompts_and_responses_ctx_depth_3.json', 'r', encoding = 'utf8') as file:
+    with open('canonical-vs-noncanonical\runs\run1\prompts_and_responses_ctx_depth_3.json', 'r', encoding = 'utf8') as file:
       responses = json.load(file)
       rows = []
         
@@ -18,7 +18,7 @@ def main():
         rows.append(row)
 
     df = pd.DataFrame(rows)
-    df.to_csv('runs/run1/prompts_and_responses_ctx_depth_3.csv', index=False)
+    df.to_csv('canonical-vs-noncanonical\runs\run1\prompts_and_responses_ctx_depth_3.csv', index=False)
 
 if __name__ == '__main__':
     main()
