@@ -32,12 +32,14 @@ def parse_annotations(filepath):
             for i in range(1, 9):
                 premise_id = row.get(f'premise_{i}_id')
                 premise_sentence = row.get(f'premise_{i}_sentence')
+                premise = row.get(f'premise_{i}')
 
                 if pd.notna(premise_id) and pd.notna(premise_sentence):
                     premises.append({
                         'annotator': annotator,
                         'premise_id': int(premise_id),
-                        'premise_sentence': premise_sentence
+                        'premise_sentence': premise_sentence,
+                        'premise': premise
                     })
 
         arguments.append(Argument(int(conclusion_id), conclusion_sentence, conclusion_details, premises))
@@ -124,7 +126,7 @@ def generate_html(arguments, output_file):
                 html += f"""
                 <tr>
                     <td class="annotator">{premise['annotator']}</td>
-                    <td class="premise">ID: {premise['premise_id']}<br>{premise['premise_sentence']}</td>
+                    <td class="premise">ID: {premise['premise_id']}<br>{premise['premise_sentence']}<br><br>{premise['premise']}</td>
                 </tr>
                 """
         html += "</table>"
