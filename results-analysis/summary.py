@@ -36,11 +36,11 @@ def parse_annotations(filepath):
                 if pd.notna(premise_id) and pd.notna(premise_sentence):
                     premises.append({
                         'annotator': annotator,
-                        'premise_id': premise_id,
+                        'premise_id': int(premise_id),
                         'premise_sentence': premise_sentence
                     })
 
-        arguments.append(Argument(conclusion_id, conclusion_sentence, conclusion_details, premises))
+        arguments.append(Argument(int(conclusion_id), conclusion_sentence, conclusion_details, premises))
 
     return arguments
 
